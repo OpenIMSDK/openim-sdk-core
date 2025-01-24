@@ -1,28 +1,11 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package open_im_sdk
 
 import (
 	"context"
-	"errors"
 
 	"github.com/openimsdk/openim-sdk-core/v3/open_im_sdk_callback"
 	"github.com/openimsdk/tools/log"
 )
-
-var ErrNotImplemented = errors.New("not set listener")
 
 type emptyGroupListener struct {
 	ctx context.Context
@@ -38,32 +21,26 @@ func (e *emptyGroupListener) OnJoinedGroupAdded(groupInfo string) {
 
 func (e *emptyGroupListener) OnJoinedGroupDeleted(groupInfo string) {
 	log.ZWarn(e.ctx, "GroupListener is not implemented", nil, "groupInfo", groupInfo)
-
 }
 
 func (e *emptyGroupListener) OnGroupMemberAdded(groupMemberInfo string) {
 	log.ZWarn(e.ctx, "GroupListener is not implemented", nil, "groupMemberInfo", groupMemberInfo)
-
 }
 
 func (e *emptyGroupListener) OnGroupMemberDeleted(groupMemberInfo string) {
 	log.ZWarn(e.ctx, "GroupListener is not implemented", nil, "groupMemberInfo", groupMemberInfo)
-
 }
 
 func (e *emptyGroupListener) OnGroupApplicationAdded(groupApplication string) {
 	log.ZWarn(e.ctx, "GroupListener is not implemented", nil, "groupApplication", groupApplication)
-
 }
 
 func (e *emptyGroupListener) OnGroupApplicationDeleted(groupApplication string) {
 	log.ZWarn(e.ctx, "GroupListener is not implemented", nil, "groupApplication", groupApplication)
-
 }
 
 func (e *emptyGroupListener) OnGroupInfoChanged(groupInfo string) {
 	log.ZWarn(e.ctx, "GroupListener is not implemented", nil, "groupInfo", groupInfo)
-
 }
 
 func (e *emptyGroupListener) OnGroupDismissed(groupInfo string) {
@@ -91,48 +68,39 @@ func newEmptyFriendshipListener(ctx context.Context) open_im_sdk_callback.OnFrie
 }
 
 func (e *emptyFriendshipListener) OnFriendApplicationAdded(friendApplication string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"friendApplication", friendApplication)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "friendApplication", friendApplication)
 }
 
 func (e *emptyFriendshipListener) OnFriendApplicationDeleted(friendApplication string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"friendApplication", friendApplication)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "friendApplication", friendApplication)
 }
 
 func (e *emptyFriendshipListener) OnFriendApplicationAccepted(friendApplication string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"friendApplication", friendApplication)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "friendApplication", friendApplication)
 }
 
 func (e *emptyFriendshipListener) OnFriendApplicationRejected(friendApplication string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"friendApplication", friendApplication)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "friendApplication", friendApplication)
 }
 
 func (e *emptyFriendshipListener) OnFriendAdded(friendInfo string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"friendInfo", friendInfo)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "friendInfo", friendInfo)
 }
 
 func (e *emptyFriendshipListener) OnFriendDeleted(friendInfo string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"friendInfo", friendInfo)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "friendInfo", friendInfo)
 }
 
 func (e *emptyFriendshipListener) OnFriendInfoChanged(friendInfo string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"friendInfo", friendInfo)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "friendInfo", friendInfo)
 }
 
 func (e *emptyFriendshipListener) OnBlackAdded(blackInfo string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"blackInfo", blackInfo)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "blackInfo", blackInfo)
 }
 
 func (e *emptyFriendshipListener) OnBlackDeleted(blackInfo string) {
-	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil,
-		"blackInfo", blackInfo)
+	log.ZWarn(e.ctx, "FriendshipListener is not implemented", nil, "blackInfo", blackInfo)
 }
 
 type emptyConversationListener struct {
@@ -148,8 +116,7 @@ func (e *emptyConversationListener) OnSyncServerStart(reinstalled bool) {
 }
 
 func (e *emptyConversationListener) OnSyncServerProgress(progress int) {
-	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil,
-		"progress", progress)
+	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil, "progress", progress)
 }
 
 func (e *emptyConversationListener) OnSyncServerFinish(reinstalled bool) {
@@ -158,25 +125,19 @@ func (e *emptyConversationListener) OnSyncServerFinish(reinstalled bool) {
 }
 
 func (e *emptyConversationListener) OnSyncServerFailed(reinstalled bool) {
-
 	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil)
 }
 
 func (e *emptyConversationListener) OnNewConversation(conversationList string) {
-	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil,
-		"conversationList", conversationList)
-
+	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil, "conversationList", conversationList)
 }
 
 func (e *emptyConversationListener) OnConversationChanged(conversationList string) {
-
-	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil,
-		"conversationList", conversationList)
+	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil, "conversationList", conversationList)
 }
 
 func (e *emptyConversationListener) OnTotalUnreadMessageCountChanged(totalUnreadCount int32) {
-	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil,
-		"totalUnreadCount", totalUnreadCount)
+	log.ZWarn(e.ctx, "ConversationListener is not implemented", nil, "totalUnreadCount", totalUnreadCount)
 }
 
 func (e *emptyConversationListener) OnConversationUserInputStatusChanged(change string) {
@@ -192,7 +153,7 @@ func newEmptyAdvancedMsgListener(ctx context.Context) open_im_sdk_callback.OnAdv
 }
 
 func (e *emptyAdvancedMsgListener) OnRecvOnlineOnlyMessage(message string) {
-
+	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "message", message)
 }
 
 func (e *emptyAdvancedMsgListener) OnRecvNewMessage(message string) {
@@ -200,14 +161,11 @@ func (e *emptyAdvancedMsgListener) OnRecvNewMessage(message string) {
 }
 
 func (e *emptyAdvancedMsgListener) OnRecvC2CReadReceipt(msgReceiptList string) {
-
-	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil,
-		"msgReceiptList", msgReceiptList)
+	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "msgReceiptList", msgReceiptList)
 }
 
 func (e *emptyAdvancedMsgListener) OnRecvGroupReadReceipt(groupMsgReceiptList string) {
-	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil,
-		"groupMsgReceiptList", groupMsgReceiptList)
+	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "groupMsgReceiptList", groupMsgReceiptList)
 }
 
 func (e *emptyAdvancedMsgListener) OnNewRecvMessageRevoked(messageRevoked string) {
@@ -215,18 +173,15 @@ func (e *emptyAdvancedMsgListener) OnNewRecvMessageRevoked(messageRevoked string
 }
 
 func (e *emptyAdvancedMsgListener) OnRecvMessageExtensionsChanged(msgID string, reactionExtensionList string) {
-	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "msgID", msgID,
-		"reactionExtensionList", reactionExtensionList)
+	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "msgID", msgID, "reactionExtensionList", reactionExtensionList)
 }
 
 func (e *emptyAdvancedMsgListener) OnRecvMessageExtensionsDeleted(msgID string, reactionExtensionKeyList string) {
-	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "msgID", msgID,
-		"reactionExtensionKeyList", reactionExtensionKeyList)
+	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "msgID", msgID, "reactionExtensionKeyList", reactionExtensionKeyList)
 }
 
 func (e *emptyAdvancedMsgListener) OnRecvMessageExtensionsAdded(msgID string, reactionExtensionList string) {
-	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "msgID", msgID,
-		"reactionExtensionList", reactionExtensionList)
+	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "msgID", msgID, "reactionExtensionList", reactionExtensionList)
 }
 
 func (e *emptyAdvancedMsgListener) OnRecvOfflineNewMessage(message string) {
@@ -235,20 +190,6 @@ func (e *emptyAdvancedMsgListener) OnRecvOfflineNewMessage(message string) {
 
 func (e *emptyAdvancedMsgListener) OnMsgDeleted(message string) {
 	log.ZWarn(e.ctx, "AdvancedMsgListener is not implemented", nil, "message", message)
-}
-
-type emptyBatchMsgListener struct{}
-
-func newEmptyBatchMsgListener() *emptyBatchMsgListener {
-	return &emptyBatchMsgListener{}
-}
-
-func (e *emptyBatchMsgListener) OnRecvNewMessages(messageList string) {
-
-}
-
-func (e *emptyBatchMsgListener) OnRecvOfflineNewMessages(messageList string) {
-
 }
 
 type emptyUserListener struct {
@@ -288,7 +229,5 @@ func newEmptyCustomBusinessListener(ctx context.Context) open_im_sdk_callback.On
 }
 
 func (e *emptyCustomBusinessListener) OnRecvCustomBusinessMessage(businessMessage string) {
-	log.ZWarn(e.ctx, "CustomBusinessListener is not implemented", nil,
-		"businessMessage", businessMessage)
-
+	log.ZWarn(e.ctx, "CustomBusinessListener is not implemented", nil, "businessMessage", businessMessage)
 }

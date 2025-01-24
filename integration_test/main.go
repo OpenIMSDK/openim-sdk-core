@@ -4,6 +4,10 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"os"
+	"runtime/debug"
+	"time"
+
 	"github.com/openimsdk/openim-sdk-core/v3/integration_test/internal/checker"
 	"github.com/openimsdk/openim-sdk-core/v3/integration_test/internal/config"
 	"github.com/openimsdk/openim-sdk-core/v3/integration_test/internal/manager"
@@ -14,9 +18,6 @@ import (
 	"github.com/openimsdk/openim-sdk-core/v3/integration_test/internal/vars"
 	"github.com/openimsdk/tools/log"
 	"github.com/openimsdk/tools/utils/formatutil"
-	"os"
-	"runtime/debug"
-	"time"
 )
 
 const runFailed = -1

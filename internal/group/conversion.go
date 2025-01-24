@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package group
 
 import (
@@ -39,7 +25,6 @@ func ServerGroupToLocalGroup(info *sdkws.GroupInfo) *model_struct.LocalGroup {
 		ApplyMemberFriend:      info.ApplyMemberFriend,
 		NotificationUpdateTime: info.NotificationUpdateTime,
 		NotificationUserID:     info.NotificationUserID,
-		//AttachedInfo:           info.AttachedInfo, // TODO
 	}
 }
 
@@ -56,7 +41,6 @@ func ServerGroupMemberToLocalGroupMember(info *sdkws.GroupMemberFullInfo) *model
 		MuteEndTime:    info.MuteEndTime,
 		OperatorUserID: info.OperatorUserID,
 		Ex:             info.Ex,
-		//AttachedInfo:   info.AttachedInfo, // todo
 	}
 }
 
@@ -76,15 +60,13 @@ func ServerGroupRequestToLocalGroupRequest(info *sdkws.GroupRequest) *model_stru
 		UserID:        info.UserInfo.UserID,
 		Nickname:      info.UserInfo.Nickname,
 		UserFaceURL:   info.UserInfo.FaceURL,
-		//Gender:        info.UserInfo.Gender,
-		HandleResult: info.HandleResult,
-		ReqMsg:       info.ReqMsg,
-		HandledMsg:   info.HandleMsg,
-		ReqTime:      info.ReqTime,
-		HandleUserID: info.HandleUserID,
-		HandledTime:  info.HandleTime,
-		Ex:           info.Ex,
-		//AttachedInfo:  info.AttachedInfo,
+		HandleResult:  info.HandleResult,
+		ReqMsg:        info.ReqMsg,
+		HandledMsg:    info.HandleMsg,
+		ReqTime:       info.ReqTime,
+		HandleUserID:  info.HandleUserID,
+		HandledTime:   info.HandleTime,
+		Ex:            info.Ex,
 		JoinSource:    info.JoinSource,
 		InviterUserID: info.InviterUserID,
 	}

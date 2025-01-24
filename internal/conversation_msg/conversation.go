@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package conversation_msg
 
 import (
@@ -93,7 +79,6 @@ func (c *Conversation) getAdvancedHistoryMessageList(ctx context.Context, req sd
 	}
 	log.ZDebug(ctx, "sort", "sort cost time", time.Since(t))
 	messageListCallback.MessageList = messageList
-
 	return &messageListCallback, nil
 }
 func (c *Conversation) handleEndSeq(ctx context.Context, req sdk.GetAdvancedHistoryMessageListParams, isReverse bool, startMessage *model_struct.LocalChatLog) error {
@@ -113,7 +98,6 @@ func (c *Conversation) handleEndSeq(ctx context.Context, req sdk.GetAdvancedHist
 				}
 			}
 		}
-
 	} else {
 		if _, ok := c.messagePullForwardEndSeqMap.Load(req.ConversationID, req.ViewType); !ok {
 			if startMessage.Seq != 0 {
@@ -129,7 +113,6 @@ func (c *Conversation) handleEndSeq(ctx context.Context, req sdk.GetAdvancedHist
 					log.ZDebug(ctx, "no valid server message", "conversationID", req.ConversationID, "startTime", startMessage.SendTime)
 				}
 			}
-
 		}
 	}
 	return nil
@@ -292,7 +275,6 @@ func (c *Conversation) typingStatusUpdate(ctx context.Context, recvID, msgTip st
 		return err
 	}
 	return nil
-
 }
 
 func (c *Conversation) insertMessageToLocalStorage(ctx context.Context, conversationID string, s *model_struct.LocalChatLog) error {
@@ -397,14 +379,6 @@ func (c *Conversation) searchLocalMessages(ctx context.Context, searchParam *sdk
 	}
 
 	// Logging and processing each message in the search results
-	//localChatLogToMsgStruct(&messageList, list)
-
-	//log.Debug("hahh",utils.KMP("SSSsdf3434","s"))
-	//log.Debug("hahh",utils.KMP("SSSsdf3434","g"))
-	//log.Debug("hahh",utils.KMP("SSSsdf3434","3434"))
-	//log.Debug("hahh",utils.KMP("SSSsdf3434","F3434"))
-	//log.Debug("hahh",utils.KMP("SSSsdf3434","SDF3"))
-	// log.Debug("", "get raw data length is", len(list))
 	log.ZDebug(ctx, "get raw data length is", "len", len(list))
 
 	for _, v := range list {

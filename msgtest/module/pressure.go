@@ -3,12 +3,13 @@ package module
 import (
 	"context"
 	"fmt"
-	"github.com/openimsdk/tools/utils/datautil"
 	"math/rand"
 	"os"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/openimsdk/tools/utils/datautil"
 
 	"github.com/openimsdk/openim-sdk-core/v3/pkg/utils"
 	"github.com/openimsdk/openim-sdk-core/v3/sdk_struct"
@@ -107,6 +108,7 @@ func (p *PressureTester) FormatGroupInfo(ctx context.Context) {
 func (p *PressureTester) GetSingleSendNum() int64 {
 	return p.singleSendNum.Load()
 }
+
 func NewPressureTester() (*PressureTester, error) {
 	metaManager := NewMetaManager(APIADDR, SECRET, MANAGERUSERID)
 	if err := metaManager.initToken(); err != nil {
@@ -164,8 +166,8 @@ func (p *PressureTester) SelectSampleFromStarEnd(start, end int, percentage floa
 	}
 	singleSampleUserList = sampleReceiver
 	return fastenedUserIDs, sampleReceiver, offlineUserIDs, nil
-
 }
+
 func (p *PressureTester) SelectStartAndEnd(start, end int) (fastenedUserIDs []string) {
 	return p.userManager.GenSEUserIDsWithPrefix(start, end, FastenedUserPrefix)
 }
@@ -348,32 +350,6 @@ func (p *PressureTester) sendMessage2Groups(senderIDs []string, groupID string, 
 	wg.Wait()
 }
 
-// func (p *PressureTester) SendSingleMessages(fastenedUserIDs []string, num int, duration time.Duration) {
-// 	var wg sync.WaitGroup
-// 	length := len(fastenedUserIDs)
-// 	rand.Seed(time.Now().UnixNano())
-// 	for i, userID := range fastenedUserIDs {
-// 		counter:=0
-// 		for counter < num {
-// 			index := rand.Intn(length)
-// 			if index != i {
-// 				counter++
-// 				wg.Add(1)
-// 				go func(reciver string,sender string,counter int) {
-// 					defer wg.Done()
-// 					if user, ok := p.msgSender[sender]; ok {
-// 						user.SendMsgWithContext(reciver, counter)
-// 					}
-// 					time.Sleep(duration)
-// 				}(fastenedUserIDs[index],userID,counter)
-// 			}
-// 		}
-
-// 	}
-// 	wg.Wait()
-
-// }
-
 func (p *PressureTester) SendSingleMessages(ctx context.Context, fastenedUserIDs []string, randomSender []string, randomReceiver, num int, duration time.Duration) {
 	log.ZWarn(ctx, "send single message start", nil, "randomSender", len(randomSender), "randomReceiver", randomReceiver)
 	if len(randomSender) == 0 || randomReceiver == 0 || num == 0 {
@@ -403,15 +379,12 @@ func (p *PressureTester) SendSingleMessages(ctx context.Context, fastenedUserIDs
 				for x := 0; x < num; x++ {
 					user.SendMsgWithContext(rv, x)
 					p.singleSendNum.Add(1)
-
 					time.Sleep(duration)
 				}
-
 			}
 		}(receiverUserIDs, userID)
 	}
 	wg.Wait()
-
 }
 
 // Shuffle gets random userID from fastenedUserIDs and returns a slice of userID with length of needNum.
@@ -442,15 +415,6 @@ func (p *PressureTester) SendSingleMessagesTo(fastenedUserIDs []string, num int,
 	//length := len(fastenedUserIDs)
 	rand.Seed(time.Now().UnixNano())
 	for i, userID := range fastenedUserIDs {
-		//counter := 0
-		//var receiverUserIDs []string
-		//for counter < num {
-		//	index := rand.Intn(length)
-		//	if index != i {
-		//		counter++
-		//		receiverUserIDs = append(receiverUserIDs, fastenedUserIDs[index])
-		//	}
-		//}
 		var receiverUserIDs []string
 		for i < num {
 			receiverUserIDs = append(receiverUserIDs, utils.IntToString(i))
@@ -482,10 +446,8 @@ func (p *PressureTester) SendMessages(sendID, recvID string, msgNum int) {
 			defer ws.Done()
 			user.SendMsgWithContext(recvID, i)
 		}()
-
 	}
 	ws.Wait()
-
 }
 
 func (p *PressureTester) importFriends(friendSenderUserIDs, recvMsgUserIDs []string) error {
@@ -652,6 +614,5 @@ func findMapIntersection(map1, map2 map[string]*msgValue) (map[string]*msgValue,
 			InMap2NotInMap1[key] = map2[key]
 		}
 	}
-
 	return InMap1NotInMap2, InMap2NotInMap1
 }

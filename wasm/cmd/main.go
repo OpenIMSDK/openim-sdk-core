@@ -1,19 +1,4 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 //go:build js && wasm
-// +build js,wasm
 
 package main
 
@@ -86,11 +71,6 @@ func registerFunc() {
 	js.Global().Set("markMessagesAsReadByMsgID", js.FuncOf(wrapperConMsg.MarkMessagesAsReadByMsgID))
 	js.Global().Set("sendMessage", js.FuncOf(wrapperConMsg.SendMessage))
 	js.Global().Set("sendMessageNotOss", js.FuncOf(wrapperConMsg.SendMessageNotOss))
-	//js.Global().Set("setMessageReactionExtensions", js.FuncOf(wrapperConMsg.SetMessageReactionExtensions))
-	//js.Global().Set("addMessageReactionExtensions", js.FuncOf(wrapperConMsg.AddMessageReactionExtensions))
-	//js.Global().Set("deleteMessageReactionExtensions", js.FuncOf(wrapperConMsg.DeleteMessageReactionExtensions))
-	//js.Global().Set("getMessageListReactionExtensions", js.FuncOf(wrapperConMsg.GetMessageListReactionExtensions))
-	//js.Global().Set("getMessageListSomeReactionExtensions", js.FuncOf(wrapperConMsg.GetMessageListSomeReactionExtensions))
 	js.Global().Set("getAllConversationList", js.FuncOf(wrapperConMsg.GetAllConversationList))
 	js.Global().Set("getConversationListSplit", js.FuncOf(wrapperConMsg.GetConversationListSplit))
 	js.Global().Set("getOneConversation", js.FuncOf(wrapperConMsg.GetOneConversation))
@@ -131,15 +111,11 @@ func registerFunc() {
 	js.Global().Set("dismissGroup", js.FuncOf(wrapperGroup.DismissGroup))
 	js.Global().Set("changeGroupMute", js.FuncOf(wrapperGroup.ChangeGroupMute))
 	js.Global().Set("changeGroupMemberMute", js.FuncOf(wrapperGroup.ChangeGroupMemberMute))
-	//js.Global().Set("setGroupMemberRoleLevel", js.FuncOf(wrapperGroup.SetGroupMemberRoleLevel))
 	js.Global().Set("setGroupMemberInfo", js.FuncOf(wrapperGroup.SetGroupMemberInfo))
 	js.Global().Set("getJoinedGroupList", js.FuncOf(wrapperGroup.GetJoinedGroupList))
 	js.Global().Set("getJoinedGroupListPage", js.FuncOf(wrapperGroup.GetJoinedGroupListPage))
 	js.Global().Set("searchGroups", js.FuncOf(wrapperGroup.SearchGroups))
 	js.Global().Set("setGroupInfo", js.FuncOf(wrapperGroup.SetGroupInfo))
-	//js.Global().Set("setGroupVerification", js.FuncOf(wrapperGroup.SetGroupVerification))
-	//js.Global().Set("setGroupLookMemberInfo", js.FuncOf(wrapperGroup.SetGroupLookMemberInfo))
-	//js.Global().Set("setGroupApplyMemberFriend", js.FuncOf(wrapperGroup.SetGroupApplyMemberFriend))
 	js.Global().Set("getGroupMemberList", js.FuncOf(wrapperGroup.GetGroupMemberList))
 	js.Global().Set("getGroupMemberOwnerAndAdmin", js.FuncOf(wrapperGroup.GetGroupMemberOwnerAndAdmin))
 	js.Global().Set("getGroupMemberListByJoinTimeFilter", js.FuncOf(wrapperGroup.GetGroupMemberListByJoinTimeFilter))
@@ -151,7 +127,6 @@ func registerFunc() {
 	js.Global().Set("getGroupApplicationListAsApplicant", js.FuncOf(wrapperGroup.GetGroupApplicationListAsApplicant))
 	js.Global().Set("acceptGroupApplication", js.FuncOf(wrapperGroup.AcceptGroupApplication))
 	js.Global().Set("refuseGroupApplication", js.FuncOf(wrapperGroup.RefuseGroupApplication))
-	//js.Global().Set("setGroupMemberNickname", js.FuncOf(wrapperGroup.SetGroupMemberNickname))
 	js.Global().Set("searchGroupMembers", js.FuncOf(wrapperGroup.SearchGroupMembers))
 	js.Global().Set("isJoinGroup", js.FuncOf(wrapperGroup.IsJoinGroup))
 	js.Global().Set("getUsersInGroup", js.FuncOf(wrapperGroup.GetUsersInGroup))
@@ -159,7 +134,6 @@ func registerFunc() {
 	wrapperUser := wasm_wrapper.NewWrapperUser(globalFuc)
 	js.Global().Set("getSelfUserInfo", js.FuncOf(wrapperUser.GetSelfUserInfo))
 	js.Global().Set("setSelfInfo", js.FuncOf(wrapperUser.SetSelfInfo))
-	//js.Global().Set("setSelfInfoEx", js.FuncOf(wrapperUser.SetSelfInfo))
 	js.Global().Set("getUsersInfo", js.FuncOf(wrapperUser.GetUsersInfo))
 	js.Global().Set("subscribeUsersStatus", js.FuncOf(wrapperUser.SubscribeUsersStatus))
 	js.Global().Set("unsubscribeUsersStatus", js.FuncOf(wrapperUser.UnsubscribeUsersStatus))
@@ -176,8 +150,6 @@ func registerFunc() {
 	js.Global().Set("searchFriends", js.FuncOf(wrapperFriend.SearchFriends))
 	js.Global().Set("checkFriend", js.FuncOf(wrapperFriend.CheckFriend))
 	js.Global().Set("addFriend", js.FuncOf(wrapperFriend.AddFriend))
-	//js.Global().Set("setFriendRemark", js.FuncOf(wrapperFriend.SetFriendRemark))
-	//js.Global().Set("pinFriends", js.FuncOf(wrapperFriend.PinFriends))
 	js.Global().Set("updateFriends", js.FuncOf(wrapperFriend.UpdateFriends))
 	js.Global().Set("deleteFriend", js.FuncOf(wrapperFriend.DeleteFriend))
 	js.Global().Set("getFriendApplicationListAsRecipient", js.FuncOf(wrapperFriend.GetFriendApplicationListAsRecipient))
@@ -187,10 +159,8 @@ func registerFunc() {
 	js.Global().Set("getBlackList", js.FuncOf(wrapperFriend.GetBlackList))
 	js.Global().Set("removeBlack", js.FuncOf(wrapperFriend.RemoveBlack))
 	js.Global().Set("addBlack", js.FuncOf(wrapperFriend.AddBlack))
-	//js.Global().Set("setFriendsEx", js.FuncOf(wrapperFriend.SetFriendsEx))
 
 	wrapperThird := wasm_wrapper.NewWrapperThird(globalFuc)
 	js.Global().Set("updateFcmToken", js.FuncOf(wrapperThird.UpdateFcmToken))
 	js.Global().Set("uploadFile", js.FuncOf(wrapperThird.UploadFile))
-
 }

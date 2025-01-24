@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package utils
 
 import (
@@ -37,10 +23,12 @@ import (
 func OperationIDGenerator() string {
 	return strconv.FormatInt(time.Now().UnixNano()+int64(rand.Uint32()), 10)
 }
+
 func GetMsgID(sendID string) string {
 	t := Int64ToString(GetCurrentTimestampByNano())
 	return Md5(t + sendID + Int64ToString(rand.Int63n(GetCurrentTimestampByNano())))
 }
+
 func Md5(s string) string {
 	h := md5.New()
 	h.Write([]byte(s))
@@ -78,6 +66,7 @@ func StructToJsonStringDefault(param interface{}) string {
 func JsonStringToStruct(s string, args interface{}) error {
 	return Wrap(json.Unmarshal([]byte(s), args), "json Unmarshal failed")
 }
+
 func FirstLower(s string) string {
 	if s == "" {
 		return ""
@@ -85,40 +74,36 @@ func FirstLower(s string) string {
 	return strings.ToLower(s[:1]) + s[1:]
 }
 
-//Convert timestamp to time.Time type
-
 func UnixSecondToTime(second int64) time.Time {
 	return time.Unix(second, 0)
 }
+
 func IntToString(i int) string {
 	return strconv.FormatInt(int64(i), 10)
 }
+
 func Int64ToString(i int64) string {
 	return strconv.FormatInt(i, 10)
 }
 
 // judge a string whether in the  string list
-func IsContain(target string, List []string) bool {
-
-	for _, element := range List {
-
+func IsContain(target string, list []string) bool {
+	for _, element := range list {
 		if target == element {
 			return true
 		}
 	}
 	return false
-
 }
-func IsContainInt(target int, List []int) bool {
 
-	for _, element := range List {
+func IsContainInt(target int, list []int) bool {
+	for _, element := range list {
 
 		if target == element {
 			return true
 		}
 	}
 	return false
-
 }
 
 func GetSwitchFromOptions(Options map[string]bool, key string) (result bool) {
@@ -127,6 +112,7 @@ func GetSwitchFromOptions(Options map[string]bool, key string) (result bool) {
 	}
 	return false
 }
+
 func SetSwitchFromOptions(Options map[string]bool, key string, value bool) {
 	Options[key] = value
 }
@@ -139,6 +125,7 @@ func GetSelfFuncName() string {
 	pc, _, _, _ := runtime.Caller(1)
 	return CleanUpfuncName(runtime.FuncForPC(pc).Name())
 }
+
 func CleanUpfuncName(funcName string) string {
 	end := strings.LastIndex(funcName, ".")
 	if end == -1 {
@@ -168,16 +155,14 @@ func GetConversationIDByMsg(msg *sdk_struct.MsgStruct) string {
 	return ""
 }
 
-func GetConversationIDByGroupID(groupID string) string {
-	return "sg_" + groupID
-}
-
 func GetConversationTableName(conversationID string) string {
 	return constant.ChatLogsTableNamePre + conversationID
 }
+
 func GetTableName(conversationID string) string {
 	return constant.ChatLogsTableNamePre + conversationID
 }
+
 func GetErrTableName(conversationID string) string {
 	return constant.SuperGroupErrChatLogsTableNamePre + conversationID
 }
@@ -213,7 +198,6 @@ func KMP(rMainString string, rSubString string) (isInMainString bool) {
 		}
 	}
 	return false
-
 }
 
 func computeNextArray(subString string) []int {

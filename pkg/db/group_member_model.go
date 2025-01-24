@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 //go:build !js
 // +build !js
 
@@ -33,21 +19,6 @@ func (d *DataBase) GetGroupMemberInfoByGroupIDUserID(ctx context.Context, groupI
 	var groupMember model_struct.LocalGroupMember
 	return &groupMember, errs.WrapMsg(d.conn.WithContext(ctx).Where("group_id = ? AND user_id = ?",
 		groupID, userID).Take(&groupMember).Error, "GetGroupMemberInfoByGroupIDUserID failed")
-}
-
-func (d *DataBase) GetAllGroupMemberList(ctx context.Context) ([]model_struct.LocalGroupMember, error) {
-	d.mRWMutex.RLock()
-	defer d.mRWMutex.RUnlock()
-	var groupMemberList []model_struct.LocalGroupMember
-	return groupMemberList, errs.WrapMsg(d.conn.WithContext(ctx).Find(&groupMemberList).Error, "GetAllGroupMemberList failed")
-}
-
-func (d *DataBase) GetGroupMemberCount(ctx context.Context, groupID string) (int32, error) {
-	d.mRWMutex.RLock()
-	defer d.mRWMutex.RUnlock()
-	var count int64
-	err := d.conn.WithContext(ctx).Model(&model_struct.LocalGroupMember{}).Where("group_id = ? ", groupID).Count(&count).Error
-	return int32(count), errs.WrapMsg(err, "GetGroupMemberCount failed")
 }
 
 func (d *DataBase) GetGroupSomeMemberInfo(ctx context.Context, groupID string, userIDList []string) ([]*model_struct.LocalGroupMember, error) {

@@ -2,6 +2,7 @@ package group
 
 import (
 	"context"
+
 	"github.com/openimsdk/openim-sdk-core/v3/pkg/db/model_struct"
 	"github.com/openimsdk/tools/log"
 	"github.com/openimsdk/tools/utils/datautil"
@@ -12,8 +13,7 @@ func (g *Group) buildGroupMemberKey(groupID string, userID string) string {
 }
 
 func (g *Group) GetGroupMembersInfoFunc(ctx context.Context, groupID string, userIDs []string,
-	fetchFunc func(ctx context.Context, missingKeys []string) ([]*model_struct.LocalGroupMember, error),
-) (map[string]*model_struct.LocalGroupMember, error) {
+	fetchFunc func(ctx context.Context, missingKeys []string) ([]*model_struct.LocalGroupMember, error)) (map[string]*model_struct.LocalGroupMember, error) {
 	var (
 		res         = make(map[string]*model_struct.LocalGroupMember)
 		missingKeys []string

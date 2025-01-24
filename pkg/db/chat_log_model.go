@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 //go:build !js
 // +build !js
 
@@ -81,10 +67,6 @@ func (d *DataBase) initChatLog(ctx context.Context, conversationID string) error
 	return nil
 }
 
-func (d *DataBase) checkTable(ctx context.Context, tableName string) bool {
-	return d.conn.Migrator().HasTable(tableName)
-}
-
 func (d *DataBase) UpdateMessage(ctx context.Context, conversationID string, c *model_struct.LocalChatLog) error {
 	d.mRWMutex.Lock()
 	defer d.mRWMutex.Unlock()
@@ -121,6 +103,7 @@ func (d *DataBase) InsertMessage(ctx context.Context, conversationID string, Mes
 	defer d.mRWMutex.Unlock()
 	return errs.WrapMsg(d.conn.WithContext(ctx).Table(utils.GetTableName(conversationID)).Create(Message).Error, "InsertMessage failed")
 }
+
 func (d *DataBase) GetMessage(ctx context.Context, conversationID string, clientMsgID string) (*model_struct.LocalChatLog, error) {
 	err := d.initChatLog(ctx, conversationID)
 	if err != nil {
@@ -198,18 +181,6 @@ func (d *DataBase) MarkDeleteConversationAllMessages(ctx context.Context, conver
 	return errs.WrapMsg(d.conn.WithContext(ctx).Table(utils.GetTableName(conversationID)).Where("1 = 1").Updates(model_struct.LocalChatLog{Status: constant.MsgStatusHasDeleted}).Error, "DeleteConversationAllMessages failed")
 }
 
-func (d *DataBase) DeleteConversationMsgs(ctx context.Context, conversationID string, msgIDs []string) error {
-	d.mRWMutex.Lock()
-	defer d.mRWMutex.Unlock()
-	return errs.WrapMsg(d.conn.WithContext(ctx).Table(utils.GetTableName(conversationID)).Where("client_msg_id IN ?", msgIDs).Delete(model_struct.LocalChatLog{}).Error, "DeleteConversationMsgs failed")
-}
-
-func (d *DataBase) DeleteConversationMsgsBySeqs(ctx context.Context, conversationID string, seqs []int64) error {
-	d.mRWMutex.Lock()
-	defer d.mRWMutex.Unlock()
-	return errs.WrapMsg(d.conn.WithContext(ctx).Table(utils.GetTableName(conversationID)).Where("seq IN ?", seqs).Delete(model_struct.LocalChatLog{}).Error, "DeleteConversationMsgs failed")
-}
-
 func (d *DataBase) SearchMessageByContentType(ctx context.Context, contentType []int, conversationID string, startTime, endTime int64, offset, count int) (result []*model_struct.LocalChatLog, err error) {
 	d.mRWMutex.RLock()
 	defer d.mRWMutex.RUnlock()
@@ -217,6 +188,7 @@ func (d *DataBase) SearchMessageByContentType(ctx context.Context, contentType [
 	err = errs.WrapMsg(d.conn.WithContext(ctx).Table(utils.GetTableName(conversationID)).Where(condition, contentType).Order("send_time DESC").Offset(offset).Limit(count).Find(&result).Error, "SearchMessage failed")
 	return result, err
 }
+
 func (d *DataBase) SearchMessageByKeyword(ctx context.Context, contentType []int, keywordList []string, keywordListMatchType int, conversationID string, startTime, endTime int64, offset, count int) (result []*model_struct.LocalChatLog, err error) {
 	d.mRWMutex.RLock()
 	defer d.mRWMutex.RUnlock()
@@ -304,16 +276,6 @@ func (d *DataBase) UpdateMsgSenderFaceURLAndSenderNickname(ctx context.Context, 
 		map[string]interface{}{"sender_face_url": faceURL, "sender_nick_name": nickname}).Error, utils.GetSelfFuncName()+" failed")
 }
 
-func (d *DataBase) GetAlreadyExistSeqList(ctx context.Context, conversationID string, lostSeqList []int64) (seqList []int64, err error) {
-	d.mRWMutex.RLock()
-	defer d.mRWMutex.RUnlock()
-	err = errs.WrapMsg(d.conn.WithContext(ctx).Table(utils.GetConversationTableName(conversationID)).Where("seq IN ?", lostSeqList).Pluck("seq", &seqList).Error, utils.GetSelfFuncName()+" failed")
-	if err != nil {
-		return nil, err
-	}
-	return seqList, nil
-}
-
 func (d *DataBase) UpdateColumnsMessage(ctx context.Context, conversationID, ClientMsgID string, args map[string]interface{}) error {
 	d.mRWMutex.Lock()
 	defer d.mRWMutex.Unlock()
@@ -324,12 +286,14 @@ func (d *DataBase) UpdateColumnsMessage(ctx context.Context, conversationID, Cli
 	}
 	return errs.WrapMsg(t.Error, "UpdateColumnsConversation failed")
 }
+
 func (d *DataBase) SearchAllMessageByContentType(ctx context.Context, conversationID string, contentType int) (result []*model_struct.LocalChatLog, err error) {
 	d.mRWMutex.RLock()
 	defer d.mRWMutex.RUnlock()
 	err = d.conn.WithContext(ctx).Table(utils.GetTableName(conversationID)).Model(&model_struct.LocalChatLog{}).Where("content_type = ?", contentType).Find(&result).Error
 	return result, err
 }
+
 func (d *DataBase) GetUnreadMessage(ctx context.Context, conversationID string) (msgs []*model_struct.LocalChatLog, err error) {
 	d.mRWMutex.RLock()
 	defer d.mRWMutex.RUnlock()
@@ -371,16 +335,6 @@ func (d *DataBase) MarkConversationMessageAsReadDB(ctx context.Context, conversa
 	// 	return 0, errs.WrapMsg(errors.New("RowsAffected == 0"), "no update")
 	// }
 	return rowsAffected, nil
-}
-
-func (d *DataBase) MarkConversationAllMessageAsRead(ctx context.Context, conversationID string) (rowsAffected int64, err error) {
-	d.mRWMutex.Lock()
-	defer d.mRWMutex.Unlock()
-	t := d.conn.WithContext(ctx).Table(utils.GetConversationTableName(conversationID)).Where("send_id != ? AND is_read == ?", d.loginUserID, false).Update("is_read", constant.HasRead)
-	if t.RowsAffected == 0 {
-		return 0, errs.WrapMsg(errors.New("RowsAffected == 0"), "no update")
-	}
-	return t.RowsAffected, errs.WrapMsg(t.Error, "UpdateMessageStatusBySourceID failed")
 }
 
 func (d *DataBase) GetMessagesByClientMsgIDs(ctx context.Context, conversationID string, msgIDs []string) (msgs []*model_struct.LocalChatLog, err error) {
@@ -429,14 +383,6 @@ func (d *DataBase) GetConversationPeerNormalMsgSeq(ctx context.Context, conversa
 	return seq, errs.WrapMsg(err, "GetConversationPeerNormalMsgSeq")
 }
 
-func (d *DataBase) UpdateMsgSenderFaceURL(ctx context.Context, sendID, faceURL string, sType int) error {
-	d.mRWMutex.Lock()
-	defer d.mRWMutex.Unlock()
-	return errs.WrapMsg(d.conn.WithContext(ctx).Model(model_struct.LocalChatLog{}).Where(
-		"send_id = ? and session_type = ? and sender_face_url != ? ", sendID, sType, faceURL).Updates(
-		map[string]interface{}{"sender_face_url": faceURL}).Error, utils.GetSelfFuncName()+" failed")
-}
-
 func (d *DataBase) GetLatestActiveMessage(ctx context.Context, conversationID string, isReverse bool) (result []*model_struct.LocalChatLog, err error) {
 	if err = d.initChatLog(ctx, conversationID); err != nil {
 		log.ZWarn(ctx, "initChatLog err", err)
@@ -461,6 +407,7 @@ func (d *DataBase) GetLatestActiveMessage(ctx context.Context, conversationID st
 
 	return result, err
 }
+
 func (d *DataBase) GetLatestValidServerMessage(ctx context.Context, conversationID string, startTime int64, isReverse bool) (*model_struct.LocalChatLog, error) {
 	d.mRWMutex.RLock()
 	defer d.mRWMutex.RUnlock()

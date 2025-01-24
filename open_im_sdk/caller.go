@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package open_im_sdk
 
 import (
@@ -164,14 +150,6 @@ func call_(operationID string, fn any, args ...any) (res any, err error) {
 				continue
 			}
 		}
-
-		//if isNumeric(arg.Kind()) && isNumeric(inFnField.Kind()) {
-		//	v := reflect.Zero(inFnField).Interface()
-		//	setNumeric(args[i], &v)
-		//	ins = append(ins, reflect.ValueOf(v))
-		//	continue
-		//}
-
 		return nil, sdkerrs.ErrSdkInternal.WrapMsg("go code error: fn in args type is not match")
 	}
 
@@ -325,7 +303,6 @@ func syncCall(operationID string, fn any, args ...any) (res string) {
 	}
 	if lastErr {
 		if last := outVals[len(outVals)-1]; last != nil {
-			//callback.OnError(10000, last.(error).Error())
 			err = last.(error)
 			return ""
 		}
@@ -436,7 +413,6 @@ func messageCall_(callback open_im_sdk_callback.SendMsgCallBack, operationID str
 	if numOut := fnt.NumOut(); numOut > 0 {
 		lastErr = fnt.Out(numOut - 1).Implements(reflect.ValueOf(new(error)).Elem().Type())
 	}
-	//fmt.Println("fnv:", fnv.Interface(), "ins:", ins)
 	outs := fnv.Call(ins)
 
 	outVals := make([]any, 0, len(outs))

@@ -80,7 +80,6 @@ func InitWithFlag() {
 
 func PrintQPS() {
 	for {
-
 		log.ZError(context.Background(), "QPS", nil, "qps", module.GetQPS())
 		time.Sleep(time.Second * 1)
 	}

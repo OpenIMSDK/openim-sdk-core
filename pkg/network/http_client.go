@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package network
 
 import (
@@ -22,7 +8,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"reflect"
 	"time"
 
 	"github.com/openimsdk/openim-sdk-core/v3/pkg/ccontext"
@@ -30,7 +15,6 @@ import (
 	"github.com/openimsdk/openim-sdk-core/v3/pkg/sdkerrs"
 	"github.com/openimsdk/tools/errs"
 
-	"github.com/openimsdk/protocol/sdkws"
 	"github.com/openimsdk/tools/log"
 )
 
@@ -168,58 +152,6 @@ func CallApi[T any](ctx context.Context, api string, req any) (*T, error) {
 	return &resp, nil
 }
 
-// GetPageAll handles pagination for API requests. It iterates over pages of data until all data is retrieved.
-// A is the request type with pagination support, B is the response type, and C is the type of data to be returned.
-// The function fn processes each page of response data to extract a slice of C.
-func GetPageAll[A interface {
-	GetPagination() *sdkws.RequestPagination
-}, B, C any](ctx context.Context, api string, req A, fn func(resp *B) []C) ([]C, error) {
-	if req.GetPagination().ShowNumber <= 0 {
-		req.GetPagination().ShowNumber = 50
-	}
-	var res []C
-	for i := int32(0); ; i++ {
-		req.GetPagination().PageNumber = i + 1
-		memberResp, err := CallApi[B](ctx, api, req)
-		if err != nil {
-			return nil, err
-		}
-		list := fn(memberResp)
-		res = append(res, list...)
-		if len(list) < int(req.GetPagination().ShowNumber) {
-			break
-		}
-	}
-	return res, nil
-}
-
-func GetPageAllWithMaxNum[A interface {
-	GetPagination() *sdkws.RequestPagination
-}, B, C any](ctx context.Context, api string, req A, fn func(resp *B) []C, maxItems int) ([]C, error) {
-	if req.GetPagination().ShowNumber <= 0 {
-		req.GetPagination().ShowNumber = 50
-	}
-	var res []C
-	totalFetched := 0
-	for i := int32(0); ; i++ {
-		req.GetPagination().PageNumber = i + 1
-		memberResp, err := CallApi[B](ctx, api, req)
-		if err != nil {
-			return nil, err
-		}
-		list := fn(memberResp)
-		res = append(res, list...)
-		totalFetched += len(list)
-		if len(list) < int(req.GetPagination().ShowNumber) || (maxItems > 0 && totalFetched >= maxItems) {
-			break
-		}
-	}
-	if maxItems > 0 && len(res) > maxItems {
-		res = res[:maxItems]
-	}
-	return res, nil
-}
-
 func FetchAndInsertPagedData[RESP, L any](ctx context.Context, api string, req page.PageReq, fn func(resp *RESP) []L, batchInsertFn func(ctx context.Context, items []L) error,
 	insertFn func(ctx context.Context, item L) error, maxItems int64) error {
 	if req.GetPagination().ShowNumber <= 0 {
@@ -252,49 +184,4 @@ func FetchAndInsertPagedData[RESP, L any](ctx context.Context, api string, req p
 		return errs.WrapMsg(errList[0], "batch insert failed due to data exception")
 	}
 	return nil
-}
-
-type pagination interface {
-	GetPagination() *sdkws.RequestPagination
-}
-
-func PageNext[Req pagination, Resp any, Elem any](ctx context.Context, req Req, api func(ctx context.Context, req Req) (*Resp, error), fn func(*Resp) []Elem) ([]Elem, error) {
-	if req.GetPagination() == nil {
-		vof := reflect.ValueOf(req)
-		for {
-			if vof.Kind() == reflect.Ptr {
-				vof = vof.Elem()
-			} else {
-				break
-			}
-		}
-		if vof.Kind() != reflect.Struct {
-			return nil, fmt.Errorf("request is not a struct")
-		}
-		fof := vof.FieldByName("Pagination")
-		if !fof.IsValid() {
-			return nil, fmt.Errorf("request is not valid Pagination field")
-		}
-		fof.Set(reflect.ValueOf(&sdkws.RequestPagination{}))
-	}
-	if req.GetPagination().PageNumber < 0 {
-		req.GetPagination().PageNumber = 0
-	}
-	if req.GetPagination().ShowNumber <= 0 {
-		req.GetPagination().ShowNumber = 200
-	}
-	var result []Elem
-	for i := int32(0); ; i++ {
-		req.GetPagination().PageNumber = i + 1
-		resp, err := api(ctx, req)
-		if err != nil {
-			return nil, err
-		}
-		elems := fn(resp)
-		result = append(result, elems...)
-		if len(elems) < int(req.GetPagination().ShowNumber) {
-			break
-		}
-	}
-	return result, nil
 }

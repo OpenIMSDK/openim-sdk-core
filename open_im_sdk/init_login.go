@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package open_im_sdk
 
 import (
@@ -58,7 +44,6 @@ func InitSDK(listener open_im_sdk_callback.OnConnListener, operationID string, c
 		fmt.Println(operationID, "log init failed ", err.Error())
 	}
 	fmt.Println("init log success")
-	// localLog.NewPrivateLog("", configArgs.LogLevel)
 	ctx := mcontext.NewCtx(operationID)
 	if !strings.Contains(configArgs.ApiAddr, "http") {
 		log.ZError(ctx, "api is http protocol, api format is invalid", nil)
@@ -84,7 +69,6 @@ func UnInitSDK(operationID string) {
 	}
 	UserForSDK.UnInitSDK()
 	UserForSDK = nil
-
 }
 
 func Login(callback open_im_sdk_callback.Base, operationID string, userID, token string) {
@@ -130,6 +114,7 @@ func (u *LoginMgr) SetAppBackgroundStatus(ctx context.Context, isBackground bool
 func (u *LoginMgr) NetworkStatusChanged(ctx context.Context) {
 	u.longConnMgr.Close(ctx)
 }
+
 func (u *LoginMgr) GetLoginStatus(ctx context.Context) int {
 	return u.getLoginStatus(ctx)
 }

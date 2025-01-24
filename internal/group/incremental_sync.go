@@ -14,14 +14,6 @@ import (
 	"github.com/openimsdk/tools/utils/datautil"
 )
 
-//func (g *Group) GetIncrementalGroupMemberBatch(ctx context.Context, groups []*group.GetIncrementalGroupMemberReq) (map[string]*group.GetIncrementalGroupMemberResp, error) {
-//	resp, err := g.getIncrementalGroupMemberBatch(ctx, &group.BatchGetIncrementalGroupMemberReq{UserID: g.loginUserID, ReqList: groups})
-//	if err != nil {
-//		return nil, err
-//	}
-//	return resp.RespList, nil
-//}
-
 func (g *Group) groupAndMemberVersionTableName() string {
 	return "local_group_entities_version"
 }

@@ -95,7 +95,6 @@ func (c *Conversation) GetMultipleConversation(ctx context.Context, conversation
 		return nil, err
 	}
 	return conversations, nil
-
 }
 
 func (c *Conversation) HideAllConversations(ctx context.Context) error {
@@ -150,7 +149,6 @@ func (c *Conversation) msgDataToLocalErrChatLog(src *model_struct.LocalChatLog) 
 	var lc model_struct.LocalErrChatLog
 	copier.Copy(&lc, src)
 	return &lc
-
 }
 
 func (c *Conversation) updateMsgStatusAndTriggerConversation(ctx context.Context, clientMsgID, serverMsgID string, sendTime int64, status int32, s *sdk_struct.MsgStruct,
@@ -682,7 +680,6 @@ func (c *Conversation) sendMessageToServer(ctx context.Context, s *sdk_struct.Ms
 		c.updateMsgStatusAndTriggerConversation(ctx, sendMsgResp.ClientMsgID, sendMsgResp.ServerMsgID, sendMsgResp.SendTime, constant.MsgStatusSendSuccess, s, lc, isOnlineOnly)
 	}()
 	return s, nil
-
 }
 
 func (c *Conversation) FindMessageList(ctx context.Context, req []*sdk_params_callback.ConversationArgs) (*sdk_params_callback.FindMessageListCallback, error) {
@@ -998,6 +995,7 @@ func (c *Conversation) SearchConversation(ctx context.Context, searchParam strin
 	// Return the list of conversations
 	return apiConversations, nil
 }
+
 func (c *Conversation) GetInputStates(ctx context.Context, conversationID string, userID string) ([]int32, error) {
 	return c.typing.GetInputStates(conversationID, userID), nil
 }

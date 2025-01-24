@@ -595,24 +595,6 @@ func (c *Conversation) diff(ctx context.Context, local, generated, cc, nc map[st
 	}
 }
 
-func (c *Conversation) genConversationGroupAtType(lc *model_struct.LocalConversation, s *sdk_struct.MsgStruct) {
-	if s.ContentType == constant.AtText {
-		tagMe := utils.IsContain(c.loginUserID, s.AtTextElem.AtUserList)
-		tagAll := utils.IsContain(constant.AtAllString, s.AtTextElem.AtUserList)
-		if tagAll {
-			if tagMe {
-				lc.GroupAtType = constant.AtAllAtMe
-				return
-			}
-			lc.GroupAtType = constant.AtAll
-			return
-		}
-		if tagMe {
-			lc.GroupAtType = constant.AtMe
-		}
-	}
-}
-
 func (c *Conversation) msgStructToLocalErrChatLog(m *sdk_struct.MsgStruct) *model_struct.LocalErrChatLog {
 	var lc model_struct.LocalErrChatLog
 	copier.Copy(&lc, m)
@@ -689,9 +671,6 @@ func (c *Conversation) batchInsertMessageList(ctx context.Context, insertMsg map
 
 	}
 	return nil
-}
-
-func (c *Conversation) DoMsgReaction(msgReactionList []*sdk_struct.MsgStruct) {
 }
 
 func (c *Conversation) newMessage(ctx context.Context, newMessagesList sdk_struct.NewMsgList, cc, nc map[string]*model_struct.LocalConversation, onlineMsg map[onlineMsgKey]struct{}) {
@@ -855,8 +834,7 @@ func (c *Conversation) batchAddFaceURLAndName(ctx context.Context, conversations
 	return nil
 }
 
-func (c *Conversation) batchGetUserNameAndFaceURL(ctx context.Context, userIDs ...string) (map[string]*model_struct.LocalUser,
-	error) {
+func (c *Conversation) batchGetUserNameAndFaceURL(ctx context.Context, userIDs ...string) (map[string]*model_struct.LocalUser, error) {
 	m := make(map[string]*model_struct.LocalUser)
 	var notInFriend []string
 

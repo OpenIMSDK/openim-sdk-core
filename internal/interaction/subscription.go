@@ -3,16 +3,15 @@ package interaction
 import (
 	"errors"
 	"fmt"
-	"github.com/openimsdk/protocol/sdkws"
-	"github.com/openimsdk/tools/utils/datautil"
 	"slices"
 	"sync"
 	"unsafe"
+
+	"github.com/openimsdk/protocol/sdkws"
+	"github.com/openimsdk/tools/utils/datautil"
 )
 
 type subscriptionStatues struct {
-	//state  int8
-	//wait   *subwait
 	done   chan struct{}
 	err    error
 	online []int32
@@ -43,7 +42,6 @@ func newSubscription() *subscription {
 		load:  make(map[string]*subscriptionStatues),
 		unsub: make(map[string]struct{}),
 		sub:   make(map[string]struct{}),
-		//done:  make(chan struct{}),
 	}
 }
 
@@ -52,8 +50,6 @@ type subscription struct {
 	load  map[string]*subscriptionStatues
 	unsub map[string]struct{}
 	sub   map[string]struct{}
-	//done  chan struct{}
-	//err   error
 }
 
 func (s *subscription) getNewConnSubUserIDs() []string {
@@ -73,17 +69,12 @@ func (s *subscription) onConnClosed(err error) {
 		statues.finish(nil, err)
 		delete(s.load, userID)
 	}
-	//s.err = err
-	//close(s.done)
-	//s.done = make(chan struct{})
 }
 
 func (s *subscription) onConnSuccess() {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 	clear(s.unsub)
-	//s.err = nil
-	//close(s.done)
 }
 
 func (s *subscription) setUserState(changes []*sdkws.SubUserOnlineStatusElem) map[string][]int32 {

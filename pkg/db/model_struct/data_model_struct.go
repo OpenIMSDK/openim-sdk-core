@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package model_struct
 
 import (
@@ -40,16 +26,12 @@ func (LocalFriend) TableName() string {
 }
 
 type LocalFriendRequest struct {
-	FromUserID   string `gorm:"column:from_user_id;primary_key;type:varchar(64)" json:"fromUserID"`
-	FromNickname string `gorm:"column:from_nickname;type:varchar;type:varchar(255)" json:"fromNickname"`
-	FromFaceURL  string `gorm:"column:from_face_url;type:varchar;type:varchar(255)" json:"fromFaceURL"`
-	// FromGender   int32  `gorm:"column:from_gender" json:"fromGender"`
-
-	ToUserID   string `gorm:"column:to_user_id;primary_key;type:varchar(64)" json:"toUserID"`
-	ToNickname string `gorm:"column:to_nickname;type:varchar;type:varchar(255)" json:"toNickname"`
-	ToFaceURL  string `gorm:"column:to_face_url;type:varchar;type:varchar(255)" json:"toFaceURL"`
-	// ToGender   int32  `gorm:"column:to_gender" json:"toGender"`
-
+	FromUserID    string `gorm:"column:from_user_id;primary_key;type:varchar(64)" json:"fromUserID"`
+	FromNickname  string `gorm:"column:from_nickname;type:varchar;type:varchar(255)" json:"fromNickname"`
+	FromFaceURL   string `gorm:"column:from_face_url;type:varchar;type:varchar(255)" json:"fromFaceURL"`
+	ToUserID      string `gorm:"column:to_user_id;primary_key;type:varchar(64)" json:"toUserID"`
+	ToNickname    string `gorm:"column:to_nickname;type:varchar;type:varchar(255)" json:"toNickname"`
+	ToFaceURL     string `gorm:"column:to_face_url;type:varchar;type:varchar(255)" json:"toFaceURL"`
 	HandleResult  int32  `gorm:"column:handle_result" json:"handleResult"`
 	ReqMsg        string `gorm:"column:req_msg;type:varchar(255)" json:"reqMsg"`
 	CreateTime    int64  `gorm:"column:create_time" json:"createTime"`
@@ -57,8 +39,7 @@ type LocalFriendRequest struct {
 	HandleMsg     string `gorm:"column:handle_msg;type:varchar(255)" json:"handleMsg"`
 	HandleTime    int64  `gorm:"column:handle_time" json:"handleTime"`
 	Ex            string `gorm:"column:ex;type:varchar(1024)" json:"ex"`
-
-	AttachedInfo string `gorm:"column:attached_info;type:varchar(1024)" json:"attachedInfo"`
+	AttachedInfo  string `gorm:"column:attached_info;type:varchar(1024)" json:"attachedInfo"`
 }
 
 type LocalGroup struct {
@@ -117,12 +98,9 @@ type LocalGroupRequest struct {
 	GroupType     int32  `gorm:"column:group_type" json:"groupType"`
 	OwnerUserID   string `gorm:"column:owner_user_id;type:varchar(64)" json:"ownerUserID"`
 	MemberCount   int32  `gorm:"column:member_count" json:"memberCount"`
-
-	UserID      string `gorm:"column:user_id;primary_key;type:varchar(64)" json:"userID"`
-	Nickname    string `gorm:"column:nickname;type:varchar(255)" json:"nickname"`
-	UserFaceURL string `gorm:"column:user_face_url;type:varchar(255)" json:"userFaceURL"`
-	// Gender      int32  `gorm:"column:gender" json:"gender"`
-
+	UserID        string `gorm:"column:user_id;primary_key;type:varchar(64)" json:"userID"`
+	Nickname      string `gorm:"column:nickname;type:varchar(255)" json:"nickname"`
+	UserFaceURL   string `gorm:"column:user_face_url;type:varchar(255)" json:"userFaceURL"`
 	HandleResult  int32  `gorm:"column:handle_result" json:"handleResult"`
 	ReqMsg        string `gorm:"column:req_msg;type:varchar(255)" json:"reqMsg"`
 	HandledMsg    string `gorm:"column:handle_msg;type:varchar(255)" json:"handledMsg"`
@@ -147,11 +125,10 @@ type LocalUser struct {
 }
 
 type LocalBlack struct {
-	OwnerUserID string `gorm:"column:owner_user_id;primary_key;type:varchar(64)" json:"ownerUserID"`
-	BlockUserID string `gorm:"column:block_user_id;primary_key;type:varchar(64)" json:"userID"`
-	Nickname    string `gorm:"column:nickname;type:varchar(255)" json:"nickname"`
-	FaceURL     string `gorm:"column:face_url;type:varchar(255)" json:"faceURL"`
-	// Gender         int32  `gorm:"column:gender" json:"gender"`
+	OwnerUserID    string `gorm:"column:owner_user_id;primary_key;type:varchar(64)" json:"ownerUserID"`
+	BlockUserID    string `gorm:"column:block_user_id;primary_key;type:varchar(64)" json:"userID"`
+	Nickname       string `gorm:"column:nickname;type:varchar(255)" json:"nickname"`
+	FaceURL        string `gorm:"column:face_url;type:varchar(255)" json:"faceURL"`
 	CreateTime     int64  `gorm:"column:create_time" json:"createTime"`
 	AddSource      int32  `gorm:"column:add_source" json:"addSource"`
 	OperatorUserID string `gorm:"column:operator_user_id;type:varchar(64)" json:"operatorUserID"`

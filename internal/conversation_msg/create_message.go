@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package conversation_msg
 
 import (
@@ -39,6 +25,7 @@ func (c *Conversation) CreateTextMessage(ctx context.Context, text string) (*sdk
 	s.TextElem = &sdk_struct.TextElem{Content: text}
 	return &s, nil
 }
+
 func (c *Conversation) CreateAdvancedTextMessage(ctx context.Context, text string, messageEntities []*sdk_struct.MessageEntity) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.AdvancedText)
@@ -79,6 +66,7 @@ func (c *Conversation) CreateTextAtMessage(ctx context.Context, text string, use
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateLocationMessage(ctx context.Context, description string, longitude, latitude float64) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Location)
@@ -105,8 +93,8 @@ func (c *Conversation) CreateCustomMessage(ctx context.Context, data, extension 
 		Description: description,
 	}
 	return &s, nil
-
 }
+
 func (c *Conversation) CreateQuoteMessage(ctx context.Context, text string, qs *sdk_struct.MsgStruct) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Quote)
@@ -123,8 +111,8 @@ func (c *Conversation) CreateQuoteMessage(ctx context.Context, text string, qs *
 		QuoteMessage: qs,
 	}
 	return &s, nil
-
 }
+
 func (c *Conversation) CreateAdvancedQuoteMessage(ctx context.Context, text string, qs *sdk_struct.MsgStruct, messageEntities []*sdk_struct.MessageEntity) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Quote)
@@ -145,8 +133,7 @@ func (c *Conversation) CreateAdvancedQuoteMessage(ctx context.Context, text stri
 	return &s, nil
 }
 
-func (c *Conversation) CreateCardMessage(ctx context.Context, card *sdk_struct.CardElem) (*sdk_struct.MsgStruct,
-	error) {
+func (c *Conversation) CreateCardMessage(ctx context.Context, card *sdk_struct.CardElem) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Card)
 	if err != nil {
@@ -156,8 +143,7 @@ func (c *Conversation) CreateCardMessage(ctx context.Context, card *sdk_struct.C
 	return &s, nil
 }
 
-func (c *Conversation) CreateVideoMessageFromFullPath(ctx context.Context, videoFullPath string, videoType string,
-	duration int64, snapshotFullPath string) (*sdk_struct.MsgStruct, error) {
+func (c *Conversation) CreateVideoMessageFromFullPath(ctx context.Context, videoFullPath string, videoType string, duration int64, snapshotFullPath string) (*sdk_struct.MsgStruct, error) {
 	dstFile := utils.FileTmpPath(videoFullPath, c.DataDir) //a->b
 	written, err := utils.CopyFile(videoFullPath, dstFile)
 	if err != nil {
@@ -208,8 +194,8 @@ func (c *Conversation) CreateVideoMessageFromFullPath(ctx context.Context, video
 		s.VideoElem.SnapshotSize = imageInfo.Size
 	}
 	return &s, nil
-
 }
+
 func (c *Conversation) CreateFileMessageFromFullPath(ctx context.Context, fileFullPath string, fileName string) (*sdk_struct.MsgStruct, error) {
 	dstFile := utils.FileTmpPath(fileFullPath, c.DataDir)
 	_, err := utils.CopyFile(fileFullPath, dstFile)
@@ -235,6 +221,7 @@ func (c *Conversation) CreateFileMessageFromFullPath(ctx context.Context, fileFu
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateImageMessageFromFullPath(ctx context.Context, imageFullPath string) (*sdk_struct.MsgStruct, error) {
 	dstFile := utils.FileTmpPath(imageFullPath, c.DataDir) //a->b
 	_, err := utils.CopyFile(imageFullPath, dstFile)
@@ -262,6 +249,7 @@ func (c *Conversation) CreateImageMessageFromFullPath(ctx context.Context, image
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateSoundMessageFromFullPath(ctx context.Context, soundPath string, duration int64) (*sdk_struct.MsgStruct, error) {
 	dstFile := utils.FileTmpPath(soundPath, c.DataDir) //a->b
 	_, err := utils.CopyFile(soundPath, dstFile)
@@ -288,6 +276,7 @@ func (c *Conversation) CreateSoundMessageFromFullPath(ctx context.Context, sound
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateImageMessage(ctx context.Context, imagePath string) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Picture)
@@ -310,8 +299,8 @@ func (c *Conversation) CreateImageMessage(ctx context.Context, imagePath string)
 		},
 	}
 	return &s, nil
-
 }
+
 func (c *Conversation) CreateImageMessageByURL(ctx context.Context, sourcePath string, sourcePicture, bigPicture, snapshotPicture sdk_struct.PictureBaseInfo) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Picture)
@@ -326,6 +315,7 @@ func (c *Conversation) CreateImageMessageByURL(ctx context.Context, sourcePath s
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateSoundMessageByURL(ctx context.Context, soundElem *sdk_struct.SoundBaseInfo) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Sound)
@@ -342,6 +332,7 @@ func (c *Conversation) CreateSoundMessageByURL(ctx context.Context, soundElem *s
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateSoundMessage(ctx context.Context, soundPath string, duration int64) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Sound)
@@ -364,6 +355,7 @@ func (c *Conversation) CreateSoundMessage(ctx context.Context, soundPath string,
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateVideoMessageByURL(ctx context.Context, videoElem sdk_struct.VideoBaseInfo) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Video)
@@ -387,6 +379,7 @@ func (c *Conversation) CreateVideoMessageByURL(ctx context.Context, videoElem sd
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateVideoMessage(ctx context.Context, videoPath string, videoType string, duration int64, snapshotPath string) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Video)
@@ -420,6 +413,7 @@ func (c *Conversation) CreateVideoMessage(ctx context.Context, videoPath string,
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateFileMessageByURL(ctx context.Context, fileElem sdk_struct.FileBaseInfo) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.File)
@@ -436,6 +430,7 @@ func (c *Conversation) CreateFileMessageByURL(ctx context.Context, fileElem sdk_
 	}
 	return &s, nil
 }
+
 func (c *Conversation) CreateFileMessage(ctx context.Context, filePath string, fileName string) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{FileElem: &sdk_struct.FileElem{}}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.File)
@@ -453,6 +448,7 @@ func (c *Conversation) CreateFileMessage(ctx context.Context, filePath string, f
 	s.Content = utils.StructToJsonString(s.FileElem)
 	return &s, nil
 }
+
 func (c *Conversation) CreateMergerMessage(ctx context.Context, messages []*sdk_struct.MsgStruct, title string, summaries []string) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{MergeElem: &sdk_struct.MergeElem{}}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Merger)
@@ -465,6 +461,7 @@ func (c *Conversation) CreateMergerMessage(ctx context.Context, messages []*sdk_
 	s.Content = utils.StructToJsonString(s.MergeElem)
 	return &s, nil
 }
+
 func (c *Conversation) CreateFaceMessage(ctx context.Context, index int, data string) (*sdk_struct.MsgStruct, error) {
 	s := sdk_struct.MsgStruct{FaceElem: &sdk_struct.FaceElem{}}
 	err := c.initBasicInfo(ctx, &s, constant.UserMsgType, constant.Face)

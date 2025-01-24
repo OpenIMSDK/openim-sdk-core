@@ -1,17 +1,3 @@
-// Copyright © 2023 OpenIM SDK. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package test
 
 import (
@@ -55,16 +41,6 @@ func Test_HideConversation(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-
-//func Test_GetConversationRecvMessageOpt(t *testing.T) {
-//	opts, err := open_im_sdk.UserForSDK.Conversation().GetConversationRecvMessageOpt(ctx, []string{"asdasd"})
-//	if err != nil {
-//		t.Fatal(err)
-//	}
-//	for _, v := range opts {
-//		t.Log(v.ConversationID, *v.Execute)
-//	}
-//}
 
 func Test_GetGlobalRecvMessageOpt(t *testing.T) {
 	opt, err := open_im_sdk.UserForSDK.Conversation().GetOneConversation(ctx, 2, "1772958501")
@@ -161,32 +137,6 @@ func Test_GetAdvancedHistoryMessageListReverse(t *testing.T) {
 	}
 }
 
-func Test_FetchSurroundingMessages(t *testing.T) {
-	req := &sdk_params_callback.FetchSurroundingMessagesReq{
-		StartMessage: &sdk_struct.MsgStruct{
-			ClientMsgID: "62519d0d87c72fd71247424534e535f0",
-			SessionType: 1,
-			SendID:      "3325086438",
-			RecvID:      "5054969402",
-			Seq:         613,
-		},
-		ViewType: cache.ViewSearch,
-		Before:   20,
-		After:    20,
-	}
-
-	resp, err := open_im_sdk.UserForSDK.Conversation().FetchSurroundingMessages(ctx, req)
-	if err != nil {
-		t.Error(err)
-		return
-	}
-	log.ZDebug(context.Background(), "FetchSurroundingMessages Resp", "resp", resp)
-	t.Log(len(resp.MessageList))
-	for _, msg := range resp.MessageList {
-		t.Logf("[%d] %#v", msg.Seq, msg.ClientMsgID)
-	}
-}
-
 func Test_InsertSingleMessageToLocalStorage(t *testing.T) {
 	_, err := open_im_sdk.UserForSDK.Conversation().InsertSingleMessageToLocalStorage(ctx, &sdk_struct.MsgStruct{}, "3411008330", "")
 	if err != nil {
@@ -252,15 +202,6 @@ func Test_ClearConversationAndDeleteAllMsg(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-
-// func Test_RevokeMessage(t *testing.T) {
-// 	err := open_im_sdk.UserForSDK.Conversation().RevokeMessage(ctx, &sdk_struct.MsgStruct{SessionType: 1, ContentType: 101,
-// 		ClientMsgID: "380e2eb1709875340d769880982ebb21", Seq: 57, SendID: "9169012630", RecvID: "2456093263"})
-// 	if err != nil {
-// 		t.Fatal(err)
-// 	}
-// 	time.Sleep(time.Second * 10)
-// }
 
 func Test_MarkConversationMessageAsRead(t *testing.T) {
 	err := open_im_sdk.UserForSDK.Conversation().MarkConversationMessageAsRead(ctx, "si_2688118337_7249315132")

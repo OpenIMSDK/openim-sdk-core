@@ -14,8 +14,6 @@ func Test_GetAppSDKVersion(t *testing.T) {
 	if err != nil {
 		return
 	}
-	// log.ZError(ctx, "DB err test", nil, "key", "vale")
-
 	info, err := db.GetAppSDKVersion(ctx)
 	if err != nil {
 		t.Fatal(err)

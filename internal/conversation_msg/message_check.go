@@ -263,6 +263,7 @@ func (c *Conversation) getConversationMaxSeq(ctx context.Context, conversationID
 	}
 	return conversation.MaxSeq
 }
+
 func (c *Conversation) getConversationMinSeq(ctx context.Context, conversationID string) int64 {
 	conversation, err := c.db.GetConversation(ctx, conversationID)
 	if err != nil {
@@ -275,6 +276,7 @@ func (c *Conversation) getConversationMinSeq(ctx context.Context, conversationID
 	}
 	return conversation.MinSeq
 }
+
 func (c *Conversation) setConversationMinSeq(ctx context.Context, isReverse bool, conversationID string, endSeq int64) {
 	conversation, err := c.db.GetConversation(ctx, conversationID)
 	if err != nil {
@@ -300,6 +302,7 @@ func (c *Conversation) setConversationMinSeq(ctx context.Context, isReverse bool
 		log.ZWarn(ctx, "Failed to update conversation", err)
 	}
 }
+
 func errHandle(seqList []int64, list *[]*model_struct.LocalChatLog, err error, messageListCallback *sdk.GetAdvancedHistoryMessageListCallback) {
 	messageListCallback.ErrCode = 100
 	messageListCallback.ErrMsg = err.Error()
@@ -442,16 +445,6 @@ func (c *Conversation) pullMessageIntoTable(ctx context.Context, pullMsgData map
 
 	}
 }
-
-// All pulled messages must undergo continuity checks within the block and between the current block and the previous
-// one. If discontinuity is detected, the gaps should be filled. During the gap-filling process, if any exceptions occur,
-// only provide the sequence numbers in descending order up to the break.
-// When the pulled messages are less than expected, retrieve the server's maximum sequence (seq) for the group, the
-// user's minimum seq for the group, and the local minimum seq for the group. If the local seq is not zero and is less
-// than or equal to the server's minimum seq, it indicates that the bottom has been reached. If the local seq is zero,
-// it can be understood as an initialization where the data hasn't been synchronized yet, or there is an exceptional
-// case. If the difference between the server's maximum seq and minimum seq is greater than or equal to zero, it
-// indicates that the bottom hasn't been reached. Otherwise, the bottom has been reached.
 
 // faceURLAndNicknameHandle handles the assignment of face URLs and nicknames for chat logs
 // based on the conversation type (single chat or group chat).
